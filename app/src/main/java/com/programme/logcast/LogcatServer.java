@@ -9,7 +9,7 @@ import java.util.Map;
 import fi.iki.elonen.NanoHTTPD;
 
 public class LogcatServer extends NanoHTTPD {
-    private static final Integer PORT = 5544;
+    private static final Integer PORT = 5656;
     private Map<String, String> htmlDataMap;
     private Map<String, String> csvDataMap;
     private Map<String, Boolean> changedMap;
@@ -157,19 +157,22 @@ public class LogcatServer extends NanoHTTPD {
                 response.addHeader("Content-Disposition", "attachment; filename=" + packageName + ".csv");
                 return response;
             }
-            responseBuilder.append("<h2 style=\"{color: #435B66; font-family: 'Work Sans', sans-serif;}\">").append(packageName.toUpperCase()).append("</h2>");
-            responseBuilder.append("<table>");
-            responseBuilder.append("<tr><th class=\"short\">Date</th><th class=\"short\">Time</th><th class=\"short\">PID</th><th class=\"short\">Level</th><th class=\"medium\">Name</th><th class=\"long\">Message</th></tr>");
-            responseBuilder.append(htmlData);
-            responseBuilder.append("</table>");
-            responseBuilder.append("<div class=\"btn\">");
-            responseBuilder.append("<button class=\"button-9\" onclick=\"downloadCSV()\">See All</button>");
-            responseBuilder.append("</div>");
-            responseBuilder.append("<script>");
-            responseBuilder.append("function downloadCSV() {");
-            responseBuilder.append("    window.location.href = \"/download/logcat.csv\";");
-            responseBuilder.append("}");
-            responseBuilder.append("</script>");
+            if (htmlData != null) {
+
+                responseBuilder.append("<h2 style=\"{color: #435B66; font-family: 'Work Sans', sans-serif;}\">").append(packageName.toUpperCase()).append("</h2>");
+                responseBuilder.append("<table>");
+                responseBuilder.append("<tr><th class=\"short\">Date</th><th class=\"short\">Time</th><th class=\"short\">PID</th><th class=\"short\">Level</th><th class=\"medium\">Name</th><th class=\"long\">Message</th></tr>");
+                responseBuilder.append(htmlData);
+                responseBuilder.append("</table>");
+                responseBuilder.append("<div class=\"btn\">");
+                responseBuilder.append("<button class=\"button-9\" onclick=\"downloadCSV()\">See All</button>");
+                responseBuilder.append("</div>");
+                responseBuilder.append("<script>");
+                responseBuilder.append("function downloadCSV() {");
+                responseBuilder.append("    window.location.href = \"/download/logcat.csv\";");
+                responseBuilder.append("}");
+                responseBuilder.append("</script>");
+            }
 
             if (hasChanged) {
                 // Clear the change flag for the package after displaying the logs

@@ -1,10 +1,15 @@
 package com.programme.logcast;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,13 +19,14 @@ import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 public class LogcatService extends Service {
+    private static final int NOTIFICATION_ID = 1;
+    private static final String CHANNEL_ID = "Logcast";
     private static final String TAG = "Logcast";
     private final LogcatServer logcatServer = new LogcatServer();
     private Map<String, List<String>> packageErrorMap;
@@ -29,41 +35,65 @@ public class LogcatService extends Service {
     Map<String, String> packagePIDMap = new HashMap<>();
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startID) {
+
+        return START_STICKY;
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
 
+        // Tạo kênh thông báo cho phiên bản Android mới (Android 8.0 trở lên)
+        NotificationChannel channel = new NotificationChannel(
+                CHANNEL_ID,
+                "Logcast",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+
+        // Tạo notification cho dịch vụ
+        Notification notification = createNotification();
+
+        // Đặt dịch vụ vào chế độ foreground
+        startForeground(NOTIFICATION_ID, notification);
+
         // Package list need to check if has errors
         packageErrorMap = new HashMap<>();
-        packageErrorMap.put("com.securityandsafetythings.datetimecontrol", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.messagebroker", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.appmanager.app", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.firmware", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.io", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.examples.aiapp_uimerge", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.videopipeline", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.networkcontrol", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.adbauthorization", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.gateway", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.devicemanagement", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.appresourceproxy", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.deviceid", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.cloudconnector.app", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.crashreporter.app", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.health", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.webserver", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.deviceapp", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.userdb", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.event", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.wificonnect", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.media", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.onvif", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.securityandsafetythings.webui", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.google.process.gservices", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.samsung.android.forest", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.android.systemui", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.datetimecontrol", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.messagebroker", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.appmanager.app", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.firmware", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.io", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.examples.aiapp_uimerge", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.videopipeline", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.networkcontrol", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.adbauthorization", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.gateway", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.devicemanagement", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.appresourceproxy", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.deviceid", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.cloudconnector.app", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.crashreporter.app", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.health", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.webserver", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.deviceapp", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.userdb", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.event", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.wificonnect", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.media", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.onvif", Arrays.asList("crash", "error", "err", "die"));
+//        packageErrorMap.put("com.securityandsafetythings.webui", Arrays.asList("crash", "error", "err", "die"));
 
         for (String packageName : packageErrorMap.keySet()) {
             StringBuilder[] contentBuilder = {new StringBuilder()};
             StringBuilder[] csvBuilder = {new StringBuilder()};
             List<String> errorList = packageErrorMap.get(packageName);
-            Map<String, String> pidMap = new HashMap<>();
+//            Map<String, String> pidMap = new HashMap<>();
             new Thread(() -> {
                 try {
                     logcatProcess = new ProcessBuilder("logcat")
@@ -76,7 +106,6 @@ public class LogcatService extends Service {
 //                    System.out.println(line);
                         boolean isPackage = line.contains(packageName);
                         boolean havePID = line.contains("ActivityManager: Start proc") && (line.contains("for service") || line.contains("for activity") || line.contains("for broadcast"));
-                        List<String> pids = new ArrayList<>();
                         if (havePID && isPackage) {
                             packagePIDMap.put(packageName, line.substring(61, line.indexOf(":", 61)));
                             System.out.println(packageName + "1 " + packagePIDMap.get(packageName));
@@ -100,10 +129,11 @@ public class LogcatService extends Service {
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(logcatProcess.getInputStream()));
                             String line = null;
                             while ((line = bufferedReader.readLine()) != null) {
-//                                System.out.println(line);
                                 boolean containPKG = line.substring(19, 25).contains(PID);
-                                boolean mustNotice = packageErrorMap.get(packageName).stream().anyMatch(line::contains);
-                                if (containPKG && mustNotice) {
+                                boolean mustNotice = errorList.stream().anyMatch(line::contains);
+                                boolean isERROR = line.contains(" E ");
+                                if (containPKG) {
+//                                    System.out.println(line);
                                     LogItem logItem = new LogItem(
                                             line.substring(0, 5) + "-" + Year.now(),
                                             line.substring(6, 14),
@@ -121,7 +151,6 @@ public class LogcatService extends Service {
                                             "<td class=\"medium\">" + logItem.getName() + "</td>" +
                                             "<td class=\"long\">" + logItem.getContent() + "</td>" +
                                             "</tr>");
-
 
                                     // Write csv data
                                     csvBuilder[0].insert(0, logItem.getDate() + ", " + logItem.getTime() + ", " + logItem.getPID() + ", " + logItem.getTag() + ", " + logItem.getName() + ", " + logItem.getContent() + "\n");
@@ -181,38 +210,6 @@ public class LogcatService extends Service {
         }
     }
 
-    // Check if package exist
-    private Map<String, List<String>> getPkgPID() {
-        Map<String, List<String>> pkgPID = new HashMap<>();
-        List<String> listFound = new ArrayList<>(packageErrorMap.keySet());
-        Log.i("pkg-check", listFound.toString());
-
-        try {
-            // Command show list package and package grant
-            Process pid = new ProcessBuilder("ps")
-                    .redirectErrorStream(true)
-                    .start();
-            pid.waitFor();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pid.getInputStream()));
-            String PID = null;
-            while ((PID = bufferedReader.readLine()) != null) {
-                Log.i("PID", PID);
-                boolean isFound = listFound.stream().anyMatch(PID::contains);
-                String foundPackage = listFound.stream().filter(PID::contains).findFirst().orElse(null);
-                if (isFound) {
-                    // Split package ID ( 4 ~> 5 number)
-                    pkgPID.put(foundPackage, Collections.singletonList(PID.substring(13, 18)));
-                }
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        for (String item : pkgPID.keySet()) {
-            Log.i("PkgName", item);
-        }
-        return pkgPID;
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -232,4 +229,14 @@ public class LogcatService extends Service {
                 (ipAddress & 0xff), (ipAddress >> 8 & 0xff),
                 (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
     }
+
+    private Notification createNotification() {
+        // Tạo notification cho dịch vụ
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Logcast Service")
+                .setContentText("Running in foreground")
+                .setSmallIcon(R.drawable.ic_adb_24px);
+        return builder.build();
+    }
+
 }
