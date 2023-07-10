@@ -37,28 +37,6 @@ public class LogcatService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
 
-        return START_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        // Tạo kênh thông báo cho phiên bản Android mới (Android 8.0 trở lên)
-        NotificationChannel channel = new NotificationChannel(
-                CHANNEL_ID,
-                "Logcast",
-                NotificationManager.IMPORTANCE_DEFAULT
-        );
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-
-        // Tạo notification cho dịch vụ
-        Notification notification = createNotification();
-
-        // Đặt dịch vụ vào chế độ foreground
-        startForeground(NOTIFICATION_ID, notification);
-
         // Package list need to check if has errors
         packageErrorMap = new HashMap<>();
         packageErrorMap.put("com.google.process.gservices", Arrays.asList("crash", "error", "err", "die"));
@@ -208,6 +186,26 @@ public class LogcatService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return START_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // Tạo kênh thông báo cho phiên bản Android mới (Android 8.0 trở lên)
+        NotificationChannel channel = new NotificationChannel(
+                CHANNEL_ID,
+                "Logcast",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+
+        // Tạo notification cho dịch vụ
+        Notification notification = createNotification();
+
+        // Đặt dịch vụ vào chế độ foreground
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     @Override
