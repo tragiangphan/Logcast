@@ -65,8 +65,8 @@ public class LogcatServer extends NanoHTTPD {
         responseBuilder.append("<html>");
         responseBuilder.append("<head>");
         responseBuilder.append("<title>Logcast Service</title>");
-        responseBuilder.append("<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n" +
-                "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n" +
+        responseBuilder.append("<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">" +
+                "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>" +
                 "<link href=\"https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap\" rel=\"stylesheet\">");
         responseBuilder.append("<style>");
         responseBuilder.append("table {" +
@@ -140,8 +140,6 @@ public class LogcatServer extends NanoHTTPD {
         responseBuilder.append("</style>");
         responseBuilder.append("</head>");
         responseBuilder.append("<body>");
-        responseBuilder.append("<label for=\"tentacles\">Enter milliseconds for reload page:</label>");
-        responseBuilder.append("<input type=\"number\" id=\"milliseconds\" name=\"milliseconds\" min=\"5\" max=\"86400\">");
 
         for (String packageName : htmlDataMap.keySet()) {
             String htmlData = htmlDataMap.get(packageName);
@@ -184,8 +182,7 @@ public class LogcatServer extends NanoHTTPD {
 
         responseBuilder.append("<script>");
         responseBuilder.append("setTimeout(function() {");
-        responseBuilder.append("var sec = document.getElementById(\"milliseconds\").value");
-        responseBuilder.append("window.location.reload(); }, sec);");
+        responseBuilder.append("window.location.reload(); }, 10000);");
         responseBuilder.append("</script>");
         responseBuilder.append("</body>");
         responseBuilder.append("</html>");

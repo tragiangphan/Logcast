@@ -39,33 +39,30 @@ public class LogcatService extends Service {
 
         // Package list need to check if has errors
         packageErrorMap = new HashMap<>();
-        packageErrorMap.put("com.google.process.gservices", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.samsung.android.forest", Arrays.asList("crash", "error", "err", "die"));
-        packageErrorMap.put("com.android.systemui", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.datetimecontrol", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.messagebroker", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.appmanager.app", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.firmware", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.io", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.examples.aiapp_uimerge", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.videopipeline", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.networkcontrol", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.adbauthorization", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.gateway", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.devicemanagement", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.appresourceproxy", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.deviceid", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.cloudconnector.app", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.crashreporter.app", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.health", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.webserver", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.deviceapp", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.userdb", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.event", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.wificonnect", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.media", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.onvif", Arrays.asList("crash", "error", "err", "die"));
-//        packageErrorMap.put("com.securityandsafetythings.webui", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.datetimecontrol", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.messagebroker", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.appmanager.app", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.firmware", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.io", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.examples.aiapp_uimerge", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.videopipeline", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.networkcontrol", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.adbauthorization", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.gateway", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.devicemanagement", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.appresourceproxy", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.deviceid", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.cloudconnector.app", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.crashreporter.app", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.health", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.webserver", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.deviceapp", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.userdb", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.event", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.wificonnect", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.media", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.onvif", Arrays.asList("crash", "error", "err", "die"));
+        packageErrorMap.put("com.securityandsafetythings.webui", Arrays.asList("crash", "error", "err", "die"));
 
         for (String packageName : packageErrorMap.keySet()) {
             StringBuilder[] contentBuilder = {new StringBuilder()};
@@ -110,7 +107,7 @@ public class LogcatService extends Service {
                                 boolean containPKG = line.substring(19, 25).contains(PID);
                                 boolean mustNotice = errorList.stream().anyMatch(line::contains);
                                 boolean isERROR = line.contains(" E ");
-                                if (containPKG) {
+                                if (containPKG && (mustNotice || isERROR)) {
 //                                    System.out.println(line);
                                     LogItem logItem = new LogItem(
                                             line.substring(0, 5) + "-" + Year.now(),
