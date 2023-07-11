@@ -140,6 +140,8 @@ public class LogcatServer extends NanoHTTPD {
         responseBuilder.append("</style>");
         responseBuilder.append("</head>");
         responseBuilder.append("<body>");
+        responseBuilder.append("<label for=\"tentacles\">Enter milliseconds for reload page:</label>");
+        responseBuilder.append("<input type=\"number\" id=\"milliseconds\" name=\"milliseconds\" min=\"5\" max=\"86400\">");
 
         for (String packageName : htmlDataMap.keySet()) {
             String htmlData = htmlDataMap.get(packageName);
@@ -182,12 +184,12 @@ public class LogcatServer extends NanoHTTPD {
 
         responseBuilder.append("<script>");
         responseBuilder.append("setTimeout(function() {");
-        responseBuilder.append("window.location.reload(); }, 5000);");
+        responseBuilder.append("var sec = document.getElementById(\"milliseconds\").value");
+        responseBuilder.append("window.location.reload(); }, sec);");
         responseBuilder.append("</script>");
         responseBuilder.append("</body>");
         responseBuilder.append("</html>");
 
         return newFixedLengthResponse(responseBuilder.toString());
     }
-
 }
